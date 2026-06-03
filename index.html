@@ -218,38 +218,120 @@ function renderStep2() {
 }
 
 // ── STEP 3 ──
-var fl3={}, ll3={}, rl3={};
+// Scent combination image lookup
+// Filenames: scent_combo_[scent].jpg (single) or scent_combo_[a]_[b].jpg (pair, alphabetical order)
+function isMobile() {
+  return window.innerWidth <= 600;
+}
+
+function getComboImage(s1, s2) {
+  var mobile = isMobile();
+  if (!s2) {
+    if (mobile) return 'assets/img/scent_combo_' + s1 + '_mobile.png';
+    return 'assets/img/scent_combo_' + s1 + '.jpg';
+  }
+  // Always use alphabetical order to match filenames
+  var a = [s1, s2].sort();
+  if (mobile) return 'assets/img/scent_combo_' + a[0] + '_' + a[1] + '_mobile.png';
+  return 'assets/img/scent_combo_' + a[0] + '_' + a[1] + '.jpg';
+}
+
+// Single bg layer for combo images — one full, one left, one right
+var bgComboFull, bgComboLeft, bgComboRight;
+
+function getSingleScentImage(s) {
+  if (isMobile()) {
+    return 'assets/img/scent_' + s + '_mobile.png';
+  }
+  return 'assets/img/scent_' + s + '.png';
+}
+
 function initStep3() {
   var panels = document.getElementById('bg-panels-3');
+
+  // Single-scent individual layers
   SCENTS.forEach(function(s) {
-    var f=document.createElement('div'); f.className='bg-layer full'; f.style.backgroundImage='url('+IMAGES[s]+')'; panels.appendChild(f); fl3[s]=f;
-    var l=document.createElement('div'); l.className='bg-layer left'; l.style.backgroundImage='url('+IMAGES[s]+')'; panels.appendChild(l); ll3[s]=l;
-    var r=document.createElement('div'); r.className='bg-layer right'; r.style.backgroundImage='url('+IMAGES[s]+')'; panels.appendChild(r); rl3[s]=r;
+    var f = document.createElement('div');
+    f.className = 'bg-layer full';
+    f.style.backgroundImage = 'url(' + getSingleScentImage(s) + ')';
+    panels.appendChild(f);
+    fl3[s] = f;
   });
+
+  // Combo layers — one full (single), one left, one right (split)
+  bgComboFull = document.createElement('div');
+  bgComboFull.className = 'bg-layer full';
+  panels.appendChild(bgComboFull);
+
+  bgComboLeft = document.createElement('div');
+  bgComboLeft.className = 'bg-layer left';
+  panels.appendChild(bgComboLeft);
+
+  bgComboRight = document.createElement('div');
+  bgComboRight.className = 'bg-layer right';
+  panels.appendChild(bgComboRight);
+
+  // Default: show floral
   fl3['floral'].classList.add('active');
 }
 
 function renderStep3() {
-  var left=scentSel[0]||null, right=scentSel[1]||null, isSplit=!!right, effLeft=left||'floral';
+  var left = scentSel[0] || null;
+  var right = scentSel[1] || null;
+  var isSplit = !!right;
+
+  // Hide all individual scent layers
   SCENTS.forEach(function(s) {
-    fl3[s].classList.toggle('active', !isSplit && s===effLeft);
-    ll3[s].classList.toggle('active', isSplit && s===effLeft);
-    rl3[s].classList.toggle('active', isSplit && s===right);
+    fl3[s].classList.remove('active');
   });
-  var c=document.getElementById('btns-3'); c.innerHTML='';
+  bgComboFull.classList.remove('active');
+  bgComboLeft.classList.remove('active');
+  bgComboRight.classList.remove('active');
+
+  // Always update single scent layer srcs in case viewport changed (mobile/desktop swap)
   SCENTS.forEach(function(s) {
-    var isSel=scentSel.includes(s);
-    var btn=document.createElement('button');
-    btn.className='scent-btn '+(isSel?'selected':'unselected');
-    btn.innerHTML='<span class="btn-label">'+s.toUpperCase()+'</span><span class="btn-check">'+chk('#111')+'</span>';
-    btn.onclick=function() {
-      if(isSel){scentSel=scentSel.filter(function(x){return x!==s;});}
-      else{if(scentSel.length>=2){showError3();return;}scentSel.push(s);}
+    fl3[s].style.backgroundImage = 'url(' + getSingleScentImage(s) + ')';
+  });
+
+  if (!left) {
+    // Nothing selected — show default floral
+    fl3['floral'].classList.add('active');
+  } else if (!isSplit) {
+    // Single selection — use combo image (which handles mobile/desktop)
+    var comboSrc = getComboImage(left, null);
+    bgComboFull.style.backgroundImage = 'url(' + comboSrc + ')';
+    bgComboFull.classList.add('active');
+  } else {
+    // Two scents selected — use getComboImage for correct mobile/desktop path
+    var splitSrc = getComboImage(left, right);
+    bgComboLeft.style.backgroundImage = 'url(' + splitSrc + ')';
+    bgComboRight.style.backgroundImage = 'url(' + splitSrc + ')';
+    bgComboLeft.classList.add('active');
+    bgComboRight.classList.add('active');
+  }
+
+  // Render buttons
+  var c = document.getElementById('btns-3');
+  c.innerHTML = '';
+  SCENTS.forEach(function(s) {
+    var isSel = scentSel.includes(s);
+    var btn = document.createElement('button');
+    btn.className = 'scent-btn ' + (isSel ? 'selected' : 'unselected');
+    btn.innerHTML = '<span class="btn-label">' + s.toUpperCase() + '</span><span class="btn-check">' + chk('#111') + '</span>';
+    btn.onclick = function() {
+      if (isSel) {
+        scentSel = scentSel.filter(function(x) { return x !== s; });
+      } else {
+        if (scentSel.length >= 2) { showError3(); return; }
+        scentSel.push(s);
+      }
       renderStep3();
     };
     c.appendChild(btn);
   });
 }
+
+var fl3 = {}, ll3 = {}, rl3 = {};
 
 function showError3() {
   var b=document.getElementById('error-banner-3');
