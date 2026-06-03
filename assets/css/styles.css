@@ -103,15 +103,68 @@ body {
   opacity: 1;
 }
 
-@media(max-width:600px) {
-.nav-links {
+.nav-hamburger {
   display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  width: 24px;
+  height: 24px;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
-.nav-top {
-  padding: 18px 16px 0;
+.nav-hamburger svg {
+  width: 20px;
+  height: 20px;
+  color: #111;
 }
 
+.nav-icon-desktop {
+  display: inline-block;
+}
+
+@media (max-width: 600px) {
+  .nav-links {
+    display: none;
+  }
+
+  .nav-top {
+    padding: 32px 20px 0;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+  }
+
+  .nav-hamburger {
+    display: flex;
+    order: 0;
+  }
+
+  .nav-brand {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    order: 1;
+  }
+
+  .nav-brand-logo {
+    width: 110px;
+    height: 35px;
+  }
+
+  .nav-icons {
+    order: 2;
+    gap: 16px;
+    position: relative;
+    top: 0px;
+  }
+
+  .nav-icon-desktop {
+    display: none;
+  }
 }
 
 /* SCREEN */
