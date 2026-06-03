@@ -666,11 +666,22 @@ body {
   border: none;
   cursor: pointer;
   opacity: 0.5;
-  transition: opacity 0.15s;
+  transition: opacity 0.15s, color 0.15s;
 }
 
 .footer-btn:hover {
   opacity: 1;
+}
+
+.footer-btn.active {
+  opacity: 1;
+  color: #000;
+}
+
+.footer-btn.disabled {
+  opacity: 0.3;
+  cursor: default;
+  pointer-events: none;
 }
 
 .footer-btn.hidden {

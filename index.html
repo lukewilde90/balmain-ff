@@ -50,7 +50,7 @@
     <div class="footer">
       <button class="footer-btn hidden">&#8249; BACK</button>
       <span class="footer-step">1 / 4</span>
-      <button class="footer-btn" onclick="goTo(2)">NEXT &#8250;</button>
+      <button class="footer-btn" id="next-1" onclick="goTo(2)">NEXT &#8250;</button>
     </div>
   </div>
 
@@ -58,9 +58,9 @@
     <div class="title">WHEN WOULD YOU WEAR YOUR FRAGRANCE?</div>
     <div class="plain-screen"><div class="plain-btn-list" id="btns-2"></div></div>
     <div class="footer">
-      <button class="footer-btn" onclick="goTo(1)">&#8249; BACK</button>
+      <button class="footer-btn" id="back-2" onclick="goTo(1)">&#8249; BACK</button>
       <span class="footer-step">2 / 4</span>
-      <button class="footer-btn" onclick="goTo(3)">NEXT &#8250;</button>
+      <button class="footer-btn" id="next-2" onclick="goTo(3)">NEXT &#8250;</button>
     </div>
   </div>
 
@@ -78,9 +78,9 @@
       </div>
     </div>
     <div class="footer">
-      <button class="footer-btn" onclick="goTo(2)">&#8249; BACK</button>
+      <button class="footer-btn" id="back-3" onclick="goTo(2)">&#8249; BACK</button>
       <span class="footer-step">3 / 4</span>
-      <button class="footer-btn" onclick="goTo(4)">NEXT &#8250;</button>
+      <button class="footer-btn disabled" id="next-3" onclick="nextStep3()">NEXT &#8250;</button>
     </div>
   </div>
 
@@ -92,9 +92,9 @@
       <div class="btn-list" id="btns-4"></div>
     </div>
     <div class="footer">
-      <button class="footer-btn" onclick="goTo(3)">&#8249; BACK</button>
+      <button class="footer-btn" id="back-4" onclick="goTo(3)">&#8249; BACK</button>
       <span class="footer-step">4 / 4</span>
-      <button class="footer-btn" onclick="goToLoading()">NEXT &#8250;</button>
+      <button class="footer-btn" id="next-4" onclick="goToLoading()">NEXT &#8250;</button>
     </div>
   </div>
 
@@ -193,6 +193,22 @@ function chk(color) {
   return '<svg width="14" height="14" viewBox="0 0 14 14" fill="none"><polyline points="2,7 5.5,10.5 12,3.5" stroke="' + color + '" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 }
 
+// ── FOOTER STATE MANAGEMENT ──
+function updateFooterBtn(id, isActive) {
+  var btn = document.getElementById(id);
+  if (!btn) return;
+  if (isActive) {
+    btn.classList.add('active');
+    btn.classList.remove('disabled');
+  } else {
+    btn.classList.remove('active');
+  }
+}
+
+function nextStep3() {
+  if (scentSel.length === 2) goTo(4);
+}
+
 // ── STEP 1 ──
 function renderStep1() {
   var c = document.getElementById('btns-1'); c.innerHTML = '';
@@ -203,6 +219,7 @@ function renderStep1() {
     btn.onclick = function() { step1Sel = step1Sel===opt?null:opt; renderStep1(); };
     c.appendChild(btn);
   });
+  updateFooterBtn('next-1', !!step1Sel);
 }
 
 // ── STEP 2 ──
@@ -215,6 +232,8 @@ function renderStep2() {
     btn.onclick = function() { step2Sel = step2Sel===opt?null:opt; renderStep2(); };
     c.appendChild(btn);
   });
+  updateFooterBtn('back-2', true); // back is always active once on step 2
+  updateFooterBtn('next-2', !!step2Sel);
 }
 
 // ── STEP 3 ──
@@ -329,6 +348,19 @@ function renderStep3() {
     };
     c.appendChild(btn);
   });
+
+  // Update next button: only active when 2 scents selected
+  var next3 = document.getElementById('next-3');
+  if (next3) {
+    if (scentSel.length === 2) {
+      next3.classList.add('active');
+      next3.classList.remove('disabled');
+    } else {
+      next3.classList.remove('active');
+      next3.classList.add('disabled');
+    }
+  }
+  updateFooterBtn('back-3', true);
 }
 
 var fl3 = {}, ll3 = {}, rl3 = {};
@@ -367,6 +399,8 @@ function renderRhythm() {
     btn.onclick=function(){rhythmSel=rhythmSel===opt?null:opt;renderRhythm();};
     c.appendChild(btn);
   });
+  updateFooterBtn('back-4', true);
+  updateFooterBtn('next-4', !!rhythmSel);
 }
 
 // ── ARCH CAROUSEL ──
