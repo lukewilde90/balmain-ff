@@ -39,6 +39,11 @@ body {
   text-align: center;
 }
 
+.nav-brand-logo {
+  width: 128px;
+  height: 40px;
+}
+
 .nav-brand-name {
   display: block;
   font-size: clamp(14px,2vw,19px);
@@ -78,7 +83,7 @@ body {
   display: flex;
   justify-content: center;
   gap: clamp(16px,3vw,44px);
-  padding: 12px 0 40px 0;
+  padding: 30px 0 40px 0;
   list-style: none;
   margin: 0 clamp(16px,3vw,48px);
   flex-wrap: wrap;
@@ -183,10 +188,28 @@ body {
 /* ARCH CAROUSEL */
 .carousel-img-wrap {
   width: 100%;
-  margin-top: clamp (0px, -32px, -32px);
+  margin-top: -6%;
   overflow: hidden;
   position: absolute;
   z-index: 0;
+}
+
+@media(max-width:1080px) {
+  .carousel-img-wrap {
+    margin-top: -4%;
+  }
+}
+
+@media(max-width:768px) {
+  .carousel-img-wrap {
+    margin-top: -3%;
+  }
+}
+
+@media(max-width:375px) {
+  .carousel-img-wrap {
+    margin-top: 2%;
+  }
 }
 
 .carousel-img {
@@ -239,7 +262,7 @@ body {
   cursor: pointer;
   font-family: 'Gotham', sans-serif;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: 0;
   display: flex;
   align-items: center;
@@ -456,7 +479,7 @@ body {
 
 .error-wrap {
   position: absolute;
-  bottom: clamp (16px, 24px. 24px);
+  bottom: clamp (16px, 24px, 24px);
   left: 0;
   right: 0;
   z-index: 5;
@@ -469,9 +492,9 @@ body {
   gap: 8px;
   background: rgba(255,255,255,0.97);
   padding: 9px 20px;
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.12em;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0;
   color: #C0392B;
   width: 100%;
   opacity: 0;
@@ -521,7 +544,7 @@ body {
 
 .loading-text {
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: 0;
   color: #000;
 }
@@ -534,8 +557,8 @@ body {
 .results-title {
   text-align: center;
   padding: clamp(40px,3vw,32px) clamp(20px,5vw,48px) clamp(24px,2vw,28px);
-  font-size: clamp(14px,2vw,18px);
-  font-weight: 600;
+  font-size: 18px;
+  font-weight: 500;
   letter-spacing: 0;
   color: #000;
 }
@@ -543,7 +566,7 @@ body {
 .results-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  gap: 8px;
 }
 
 @media(max-width:600px) {
@@ -555,7 +578,7 @@ body {
 
 .result-card {
   position: relative;
-  border-radius: 12px;
+  border-radius: 20px;
   overflow: hidden;
   height: clamp(260px,45vw,360px);
   cursor: pointer;
@@ -587,18 +610,18 @@ body {
 }
 
 .result-card-name {
-  font-size: clamp(14px,2vw,18px);
+  font-size: 18px;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0;
   color: #fff;
   text-transform: uppercase;
 }
 
 .result-card-desc {
-  font-size: clamp(8px,1vw,10px);
+  font-size: 12px;
   font-weight: 500;
-  letter-spacing: 0.1em;
-  color: rgba(255,255,255,0.8);
+  letter-spacing: 0;
+  color: #fff;
   margin-top: 4px;
   text-transform: uppercase;
 }
@@ -610,7 +633,7 @@ body {
   cursor: pointer;
   font-family: 'Gotham', sans-serif;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: 0;
   padding: 10px 16px;
   border-radius: 20px;
@@ -620,13 +643,14 @@ body {
 }
 
 .shop-btn:hover {
-  background: #f0ede8;
+  background: #5c5c5c;
+  color: #fff;
 }
 
 .restart-wrap {
   display: flex;
   justify-content: center;
-  margin-top: 32px;
+  margin-top: 44px;
 }
 
 .restart-btn {
@@ -636,7 +660,7 @@ body {
   cursor: pointer;
   font-family: 'Gotham', sans-serif;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: 0;
   padding: 12px 32px;
   border-radius: 20px;
@@ -653,13 +677,13 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 24px clamp(20px,3vw,40px);
+  padding: 36px clamp(20px,3vw,40px);
 }
 
 .footer-btn {
   font-family: 'Gotham', sans-serif;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: 0;
   color: #000;
   background: none;
@@ -690,7 +714,7 @@ body {
 
 .footer-step {
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: 0;
   color: #666;
 }
